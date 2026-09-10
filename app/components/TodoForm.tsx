@@ -2,17 +2,23 @@
 
 import { FormEvent, useState } from "react";
 
-export default function TodoForm() {
+type TodoFormProps = {
+  onAddTodo: (title: string) => void;
+};
+
+export default function TodoForm({ onAddTodo }: TodoFormProps) {
   const [title, setTitle] = useState("");
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!title.trim()) {
+    const trimmedTitle = title.trim();
+
+    if (!trimmedTitle) {
       return;
     }
 
-    alert(`Todo "${title}" ditambahkan`);
+    onAddTodo(trimmedTitle);
     setTitle("");
   }
 
@@ -28,7 +34,8 @@ export default function TodoForm() {
 
       <button
         type="submit"
-        className="rounded-lg bg-black px-5 py-2 text-white"
+        disabled={!title.trim()}
+        className="rounded-lg bg-black px-5 py-2 text-white disabled:opacity-50"
       >
         Tambah
       </button>

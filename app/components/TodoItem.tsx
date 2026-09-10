@@ -1,33 +1,36 @@
 "use client";
 
-import { useState } from "react";
 import { Todo } from "@/types/todo";
 
 type TodoItemProps = {
   todo: Todo;
+  onToggle: (id: number) => void;
+  onDelete: (id: number) => void;
 };
 
-export default function TodoItem({ todo }: TodoItemProps) {
-  const [completed, setCompleted] = useState(todo.completed);
-
+export default function TodoItem({
+  todo,
+  onToggle,
+  onDelete,
+}: TodoItemProps) {
   return (
     <div
       className={`flex items-center gap-3 rounded-md border px-3 py-3 ${
-        completed
+        todo.completed
           ? "border-green-200 bg-green-50"
           : "border-gray-200 bg-white"
       }`}
     >
       <input
         type="checkbox"
-        checked={completed}
-        onChange={() => setCompleted(!completed)}
+        checked={todo.completed}
+        onChange={() => onToggle(todo.id)}
         className="h-4 w-4 accent-[#2B7FFF]"
       />
 
       <span
         className={`flex-1 text-sm ${
-          completed
+          todo.completed
             ? "text-gray-400 line-through"
             : "text-gray-700"
         }`}
@@ -41,6 +44,15 @@ export default function TodoItem({ todo }: TodoItemProps) {
       >
         Detail
       </a>
+
+      <button
+        type="button"
+        onClick={() => onDelete(todo.id)}
+        title="Hapus tugas"
+        className="text-xs font-medium text-red-500 hover:underline"
+      >
+        Hapus
+      </button>
     </div>
   );
 }
